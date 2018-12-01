@@ -2,6 +2,9 @@
 
 - Before Deployment:
     1. Install Python3 onto server
+        - If on linux server run commands:
+        - sudo apt-get update
+        - sudo apt-get install python3.6
     2. Pip install virtual environment
         - Run command: pip3 install virtualenv
 
@@ -12,5 +15,11 @@
     3. Create virtual environment
         - Run command: virtualenv projectenv
     4. Activate virtual environment
-        - Run command: projectenv/bin/activate
+        - Run command: source projectenv/bin/activate
     5. Pip install all required libraries needed
+        - Run Command: pip3 install -r requirements.txt
+    6. Test if Flask application can run
+        - Run Command: python3 app.py
+        - If app runs, enter command CTRL-C to exit application
+    7. Use Gunicorn to bind Flask app to a port
+        - gunicorn --bind 0.0.0.0:8000 app
