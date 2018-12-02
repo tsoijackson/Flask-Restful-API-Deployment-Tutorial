@@ -48,20 +48,22 @@
     12. Install nginx
         - Run Command: sudo apt-get update
         - Run Command: sudo apt-get install nginx
+        - Uninstall Purge Command: sudo apt-get purge nginx nginx-common
 
     11. Configure nginx
-        - Run Command: sudo nano /etc/nginx/nginx.conf
+        - Run Command: sudo nano /etc/nginx/sites-available/Flask-Restful-API-Deployment-Tutorial
 
     12. Add under include  
 
-            server {  
-                listen 80;  
-                server_name server_domain_or_ip;  
-                location / {  
-                    proxy_set_header Host $http_host;  
-                    proxy_set_header X-Real-IP $remote_addr;  
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  
-                    proxy_set_header X-Forwarded-Proto $scheme;  
-                    proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;  
-                }  
-            }  
+            server {
+                listen 8000;
+                server_name server_domain_or_IP;
+
+                location / {
+                    include proxy_params;
+                    proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;
+                }
+            }
+
+    13. Enable nginx configuration
+        - Run Command: sudo ln -s /etc/nginx/sites-available/Flask-Restful-API-Deployment-Tutorial /etc/nginx/sites-enabled
