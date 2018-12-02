@@ -52,15 +52,16 @@
     11. Configure nginx
         - Run Command: sudo nano /etc/nginx/nginx.conf
 
-    12. Add under include
-        server {  
-            listen 80;  
-            server_name server_domain_or_ip;  
-            location / {  
-                proxy_set_header Host $http_host;  
-                proxy_set_header X-Real-IP $remote_addr;  
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  
-                proxy_set_header X-Forwarded-Proto $scheme;  
-                proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;  
+    12. Add under include  
+
+            server {  
+                listen 80;  
+                server_name server_domain_or_ip;  
+                location / {  
+                    proxy_set_header Host $http_host;  
+                    proxy_set_header X-Real-IP $remote_addr;  
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  
+                    proxy_set_header X-Forwarded-Proto $scheme;  
+                    proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;  
+                }  
             }  
-        }  
