@@ -42,4 +42,25 @@
         WantedBy=multi-user.target  
     
     10. Start Process
-        - Run Command: sudo start Flask-Restful-API-Deployment-Tutorial
+        - Run Command: sudo systemctl start Flask-Restful-API-Deployment-Tutorial
+        - Run Command: sudo systemctl enable Flask-Restful-API-Deployment-Tutorial
+
+    12. Install nginx
+        - Run Command: sudo apt-get update
+        - Run Command: sudo apt-get install nginx
+
+    11. Configure nginx
+        - Run Command: sudo nano /etc/nginx/nginx.conf
+
+    12. Add under include
+        server {  
+            listen 80;  
+            server_name server_domain_or_ip;  
+            location / {  
+                proxy_set_header Host $http_host;  
+                proxy_set_header X-Real-IP $remote_addr;  
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;  
+                proxy_set_header X-Forwarded-Proto $scheme;  
+                proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;  
+            }  
+        }  
