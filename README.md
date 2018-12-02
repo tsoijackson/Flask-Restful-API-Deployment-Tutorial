@@ -22,4 +22,4 @@
         - Run Command: python3 app.py
         - If app runs, enter command CTRL-C to exit application
     7. Use Gunicorn to bind Flask app to a port
-        - gunicorn --bind 0.0.0.0:8000 app
+        - Run Command: gunicorn Flask-Restful-API-Deployment-Tutorial:app -b localhost:8000 &
