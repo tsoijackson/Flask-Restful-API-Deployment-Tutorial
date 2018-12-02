@@ -24,19 +24,22 @@
     7. Use Gunicorn to bind Flask app to a port
         - Run Command: gunicorn --bind 0.0.0.0:8000 wsgi
         - If app runs, enter command CTRL-C to exit application
-    8. Create Upstart Script
-        - Run Command: sudo nano /etc/init/Flask-Restful-API-Deployment-Tutorial.conf
+    8. Create systemd file
+        - Run Command: sudo nano /etc/systemd/system/Flask-Restful-API-Deployment-Tutorial.service
     9. Write into conf file (without bullet points) <br /><br />
-        start on runlevel [2345] <br />
-        stop on runlevel [!2345] <br />
+        [Unit]  
+        Description=Gunicorn instance 
+        After=network.target  
 
-        respawn <br />
-        setuid root <br />
-        setgid www-data <br />
+        [Service]  
+        User=root  
+        Group=nginx  
+        WorkingDirectory=/home/root/Flask-Restful-API-Deployment-Tutorial  
+        Environment="PATH=/home/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin"  
+        ExecStart=/home/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin/gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi  
 
-        env PATH=/home/user/Flask-Restful-API-Deployment-Tutorial/projectenv/bin <br />
-        chdir /home/user/Flask-Restful-API-Deployment-Tutorial <br />
-        exec gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi <br />
+        [Install]  
+        WantedBy=multi-user.target  
     
     10. Start Process
         - Run Command: sudo start Flask-Restful-API-Deployment-Tutorial
