@@ -67,3 +67,9 @@
 
     13. Enable nginx configuration
         - Run Command: sudo ln -s /etc/nginx/sites-available/Flask-Restful-API-Deployment-Tutorial /etc/nginx/sites-enabled
+
+    14. Test for syntax errors
+        - Run Command: sudo nginx -t
+
+    15. Restart nginx
+        - Run Command: sudo systemctl restart nginx
