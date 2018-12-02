@@ -23,3 +23,20 @@
         - If app runs, enter command CTRL-C to exit application
     7. Use Gunicorn to bind Flask app to a port
         - Run Command: gunicorn --bind 0.0.0.0:8000 wsgi
+        - If app runs, enter command CTRL-C to exit application
+    8. Create Upstart Script
+        - Run Command: sudo nano /etc/init/Flask-Restful-API-Deployment-Tutorial.conf
+    9. Write into conf file (without bullet points) <br /><br />
+        start on runlevel [2345] <br />
+        stop on runlevel [!2345] <br />
+
+        respawn <br />
+        setuid root <br />
+        setgid www-data <br />
+
+        env PATH=/home/user/Flask-Restful-API-Deployment-Tutorial/projectenv/bin <br />
+        chdir /home/user/Flask-Restful-API-Deployment-Tutorial <br />
+        exec gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi <br />
+    
+    10. Start Process
+        - Run Command: sudo start Flask-Restful-API-Deployment-Tutorial
