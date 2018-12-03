@@ -29,6 +29,7 @@
     1. Install Supervisor
         - apt-get install supervisor
         - service supervisor restart
+        - sudo supervisorctl reload
     2. Create conf file
         - sudo nano /etc/supervisor/conf.d/Flask-Restful-API-Deployment-Tutorial.conf
     3. Write into the file  
