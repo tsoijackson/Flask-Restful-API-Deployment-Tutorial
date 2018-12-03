@@ -44,6 +44,7 @@
     4. Update Changes
         - sudo supervisorctl reread
         - sudo supervisorctl update
+        - sudo supervisorctl reload
     5. Check if Processes Running
         - ps ax | grep gunicorn
         - sudo supervisorctl status Flask-Restful-API-Deployment-Tutorial
