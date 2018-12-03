@@ -34,9 +34,9 @@
         [Service]  
         User=root  
         Group=nginx  
-        WorkingDirectory=/home/root/Flask-Restful-API-Deployment-Tutorial  
-        Environment="PATH=/home/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin"  
-        ExecStart=/home/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin/gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi  
+        WorkingDirectory=/root/Flask-Restful-API-Deployment-Tutorial  
+        Environment="PATH=/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin"  
+        ExecStart=/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin/gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi  
 
         [Install]  
         WantedBy=multi-user.target  
@@ -61,7 +61,7 @@
 
                 location / {
                     include proxy_params;
-                    proxy_pass http://unix:/home/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;
+                    proxy_pass http://unix:/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;
                 }
             }
 
@@ -73,3 +73,8 @@
 
     15. Restart nginx
         - Run Command: sudo systemctl restart nginx
+
+    15. Open Ports
+        - Run Command: sudo ufw delete allow 8000
+        - Run Command: sudo ufw allow 'Nginx Full'
+        - Check Ports Status: 
