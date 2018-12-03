@@ -8,7 +8,7 @@
     2. Pip install virtual environment
         - Run command: pip3 install virtualenv
 
-- Deployment:
+- Checking if Project Can Run On Server:
     1. Clone this Project from Github to Server
         - Run command: git clone https://github.com/tsoijackson/Flask-Restful-API-Deployment-Tutorial.git
     2. Cd into project folder ( cd Flask-Restful-API-Deployment-Tutorial )
@@ -17,64 +17,33 @@
     4. Activate virtual environment
         - Run command: source projectenv/bin/activate
     5. Pip install all required libraries needed
-        - Run Command: pip3 install -r requirements.txt
+        - Run Command: pip install -r requirements.txt
     6. Test if Flask application can run
         - Run Command: python3 app.py
         - If app runs, enter command CTRL-C to exit application
     7. Use Gunicorn to bind Flask app to a port
         - Run Command: gunicorn --bind 0.0.0.0:8000 wsgi
         - If app runs, enter command CTRL-C to exit application
-    8. Create systemd file
-        - Run Command: sudo nano /etc/systemd/system/Flask-Restful-API-Deployment-Tutorial.service
-    9. Write into conf file (without bullet points) <br /><br />
-        [Unit]  
-        Description=Gunicorn instance 
-        After=network.target  
 
-        [Service]  
-        User=root  
-        Group=nginx  
-        WorkingDirectory=/root/Flask-Restful-API-Deployment-Tutorial  
-        Environment="PATH=/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin"  
-        ExecStart=/root/Flask-Restful-API-Deployment-Tutorial/projectenv/bin/gunicorn --workers 3 --bind unix:Flask-Restful-API-Deployment-Tutorial.sock -m 007 wsgi  
+- Deployment:
+    1. Install Supervisor
+        - apt-get install supervisor
+        - service supervisor restart
+    2. Create conf file
+        - sudo nano /etc/supervisor/conf.d/Flask-Restful-API-Deployment-Tutorial.conf
+    3. Write into the file  
 
-        [Install]  
-        WantedBy=multi-user.target  
-    
-    10. Start Process
-        - Run Command: sudo systemctl start Flask-Restful-API-Deployment-Tutorial
-        - Run Command: sudo systemctl enable Flask-Restful-API-Deployment-Tutorial
-
-    12. Install nginx
-        - Run Command: sudo apt-get update
-        - Run Command: sudo apt-get install nginx
-        - Uninstall Purge Command: sudo apt-get purge nginx nginx-common
-
-    11. Configure nginx
-        - Run Command: sudo nano /etc/nginx/sites-available/Flask-Restful-API-Deployment-Tutorial
-
-    12. Add under include  
-
-            server {
-                listen 8000;
-                server_name server_domain_or_IP;
-
-                location / {
-                    include proxy_params;
-                    proxy_pass http://unix:/root/Flask-Restful-API-Deployment-Tutorial/Flask-Restful-API-Deployment-Tutorial.sock;
-                }
-            }
-
-    13. Enable nginx configuration
-        - Run Command: sudo ln -s /etc/nginx/sites-available/Flask-Restful-API-Deployment-Tutorial /etc/nginx/sites-enabled
-
-    14. Test for syntax errors
-        - Run Command: sudo nginx -t
-
-    15. Restart nginx
-        - Run Command: sudo systemctl restart nginx
-
-    15. Open Ports
-        - Run Command: sudo ufw delete allow 8000
-        - Run Command: sudo ufw allow 'Nginx Full'
-        - Check Ports Status: 
+        [program:Flask-Restful-API-Deployment-Tutorial]  
+        command=/Flask-Restful-API-Deployment-Tutorial/projectenv/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi  
+        directory=/Flask-Restful-API-Deployment-Tutorial  
+        autostart=true  
+        autorestart=true  
+        stderr_logfile=/var/log/Flask-Restful-API-Deployment-Tutorial.err.log  
+        stdout_logfile=/var/log/Flask-Restful-API-Deployment-Tutorial.out.log  
+    4. Update Changes
+        - sudo supervisorctl reread
+        - sudo supervisorctl update
+    5. Check if Processes Running
+        - ps ax | grep gunicorn
+        - sudo supervisorctl status Flask-Restful-API-Deployment-Tutorial
+        - Log Errors: sudo nano /var/log/Flask-Restful-API-Deployment-Tutorial.err.log
